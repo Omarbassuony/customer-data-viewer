@@ -127,14 +127,14 @@ export default function Table() {
         <input
           type="text"
           placeholder="Search by name"
-          className="py-2 px-4 border border-gray-300 rounded-md focus:border-blue-700 focus:border-2 outline-none"
+          className="w-full md:w-1/2 py-2 px-4 border border-gray-300 rounded-md focus:border-blue-700 focus:border-2 outline-none"
           value={searchCustomer}
           onChange={handleCustomerSearch}
         />
         <input
           type="text"
           placeholder="Search by amount"
-          className="py-2 px-4 border border-gray-300 rounded-md focus:border-blue-700 focus:border-2 outline-none"
+          className="w-full md:w-1/2 py-2 px-4 border border-gray-300 rounded-md focus:border-blue-700 focus:border-2 outline-none"
           value={searchAmount}
           onChange={handleAmountSearch}
         />
