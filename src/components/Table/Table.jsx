@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -28,6 +28,7 @@ export default function Table() {
   const [searchCustomer, setSearchCustomer] = useState('');
   const [searchAmount, setSearchAmount] = useState('');
   const [chartData, setChartData] = useState({});
+  const chartRef = useRef(null);
 
   useEffect(() => {
     const fetchCustomersAndTransactions = async () => {
@@ -73,7 +74,7 @@ export default function Table() {
             label: `Total Amount for ${selectedCustomer.name}`,
             data: data,
             fill: false,
-            borderColor: 'rgb(37 ,99, 235)',
+            borderColor: 'rgb(37, 99, 235)',
             tension: 0.1,
           },
         ],
@@ -82,6 +83,12 @@ export default function Table() {
       setChartData({});
     }
   }, [filteredTransactions, selectedCustomer]);
+
+  useEffect(() => {
+    if (selectedCustomer && chartRef.current) {
+      chartRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [selectedCustomer]);
 
   const handleCustomerSelect = (customer) => {
     setSelectedCustomer(customer);
@@ -175,12 +182,14 @@ export default function Table() {
 
       {selectedCustomer ? (
         <>
-          <h2 className="text-lg font-bold mb-2">{`Total Transaction Amount per Day for ${selectedCustomer.name}`}</h2>
-          {Object.keys(chartData).length > 0 ? (
-            <Line data={chartData} />
-          ) : (
-            <p>No data available for {selectedCustomer.name}</p>
-          )}
+          <div ref={chartRef}>
+            <h2 className="text-lg font-bold mb-2">Total Transaction Amount per Day for <span className='text-blue-600'>{`${selectedCustomer.name}`}</span> </h2>
+            {Object.keys(chartData).length > 0 ? (
+              <Line data={chartData} />
+            ) : (
+              <p>No data available for {selectedCustomer.name}</p>
+            )}
+          </div>
         </>
       ) : (
         <p className="text-red-500 my-12 text-2xl">Select a customer to show their chart.</p>
